@@ -10,6 +10,7 @@ module Gibberish
     mattr_reader :default_language
 
     @@current_language = nil
+
     def current_language
       @@current_language || default_language
     end
@@ -20,9 +21,6 @@ module Gibberish
 
     def default_language?
       current_language == default_language
-    end
-
-    def use_default_language
     end
 
     def translations
