@@ -2,5 +2,103 @@
 
 Yet another localization library.  Maybe with the most agreeable API.
 
+= Usage
+
+It's simple.  Your default language, by default, is English (:en).
+
+  >> "Hey there!"[:hey]
+  => "Hey there!"
+
+Gibberish looks in RAILS_ROOT/lang/*.yml for translation files.  Say you have RAILS_ROOT/lang/es.yml, 
+right?  Gibberish will detect that you know about the :es language and will serve up translations
+defined in that file if requested to do so.
+
+Here's a real simple example file (it's just "key: translation"):
+
+  $ cat lang/es.yml
+  hey: ¡Hey allí!
+
+And, as follows, a real simple example session:
+
+  >> "Hey there!"[:hey]
+  => "Hey there!"
+  >> Gibberish.current_language
+  => :en
+  >> Gibberish.current_language = :es
+  => :es
+  >> "Hey there!"[:hey]
+  => "¡Hey allí!"
+  >> Gibberish.current_language = nil
+  => nil
+  >> "Hey there!"[:hey]
+  => "Hey there!"
+
+It even works with simple interpolation:
+
+  >> "Hey, {name}!"[:hey_name, 'Chris']   
+  => "Hey, Chris!"
+  >> "{name} is from {place}"[:hey_place, 'Chris', 'the Dreamworld']
+  => "Chris is from the Dreamworld"
+
+Notice we don't use hashes (#) like normal Ruby interpolation.  Also, the names of the variables
+in the brackets don't really mean much.  Interpolation is done in order -- the first argument replaces
+the first variable in brackets, the second the second, etc.
+
+This of course works with your translations:
+
+  $ cat lang/es.yml
+  hey: ¡Hey allí!
+  hey_name: ¡Hola {name}!
+
+  >> "Hey, {name}!"[:hey_name, 'Chris']   
+  => "Hey, Chris!"
+  >> Gibberish.current_language = :es
+  => :es
+  >> "Hey, {name}!"[:hey_name, 'Cristóbal']   
+  => ¡Hola Cristóbal!
+
+Neat.  What other methods do we get?
+
+The classic around_filter use case:
+
+  >> Gibberish.default_language?
+  => true
+  >> Gibberish.use_language(:es) do
+  ?>   puts "hey"[:hey]
+  >> end
+  ¡Hey allí!
+
+So, in your ApplicationController (or somewhere):
+
+  class ApplicationController < ActionController::Base
+    around_filter :use_language
+
+  private
+    def use_language
+      Gibberish.use_language(session[:language]) { yield }
+    end
+  end
+
+Rad.
+
+Finally, some checking methods, if you need them:
+
+  >> Gibberish.default_language?
+  => true
+  >> Gibberish.current_language = :es
+  => :es
+  >> Gibberish.default_language?
+  => false
+
+Languages are loaded by default at Rails startup.  In dev mode, language YAML files are reloaded when
+modified.  No need to reboot the server.
+
+  >> Gibberish.load_languages!
+  => [:es, :fr, :de, :kl]
+  >> Gibberish.languages
+  => [:es, :fr, :de, :kl]
+
+More as it's needed.
+
 >> Chris Wanstrath
 => chris[at]ozmm[dot]org

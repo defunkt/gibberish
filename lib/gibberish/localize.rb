@@ -1,19 +1,17 @@
 module Gibberish
   module Localize
-    @@config = {}
-    mattr_accessor :config
-
-    @@languages = {}
-    mattr_accessor :languages
-
     @@default_language = :en
     mattr_reader :default_language
 
     @@reserved_keys = [ :limit ]
     mattr_reader :reserved_keys
 
-    @@current_language = nil
+    @@languages = {}
+    def languages
+      @@languages.keys
+    end
 
+    @@current_language = nil
     def current_language
       @@current_language || default_language
     end
@@ -22,7 +20,7 @@ module Gibberish
       load_languages! if defined? RAILS_ENV && RAILS_ENV == 'development'
 
       language = language.to_sym if language.respond_to? :to_sym
-      @@current_language = languages[language] ? language : nil
+      @@current_language = @@languages[language] ? language : nil
     end
 
     def use_language(language)
@@ -51,6 +49,7 @@ module Gibberish
         key = File.basename(file, '.*').to_sym
         @@languages[key] = YAML.load_file(file).symbolize_keys
       end
+      languages
     end
 
   private

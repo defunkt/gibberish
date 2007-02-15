@@ -18,7 +18,7 @@ context "After loading languages, Gibberish" do
   end
 
   specify "should know what languages it has translations for" do
-    Gibberish.languages.keys.should.include :es
+    Gibberish.languages.should.include :es
   end
 
   specify "should know if it is using the default language" do
@@ -58,11 +58,25 @@ context "After loading languages, Gibberish" do
 
     Gibberish.use_language :es do
       string[:welcome_friend].should.not.equal string
-    Gibberish.should.not.be.default_language
+      Gibberish.should.not.be.default_language
     end
 
     Gibberish.should.be.default_language
     string[:welcome_friend].should.equal string
+  end
+
+  specify "should return an array of the languages it loaded" do
+    languages = Gibberish.load_languages!
+    languages.should.be.an.instance_of Array
+    languages.should.include :es
+    languages.should.include :fr
+  end
+
+  specify "should know what languages it has loaded" do
+    languages = Gibberish.languages
+    languages.should.be.an.instance_of Array
+    languages.should.include :es
+    languages.should.include :fr
   end
 end
 
