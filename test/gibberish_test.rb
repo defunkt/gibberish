@@ -75,7 +75,8 @@ context "When a non-existent language is set" do
   specify "gibberish strings should return themselves" do
     string = "something gibberishy"
     string[:welcome_friend].should.equal string
-  end end
+  end 
+end
 
 context "A gibberish string (in general)" do
   specify "should be a string" do
