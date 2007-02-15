@@ -19,6 +19,7 @@ module Gibberish
     end
 
     def current_language=(language)
+      language = language.to_sym if language.respond_to? :to_sym
       @@current_language = languages[language] ? language : nil
     end
 

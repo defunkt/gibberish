@@ -37,6 +37,11 @@ context "After loading languages, Gibberish" do
     string[:welcome_friend].should.equal string
   end
 
+  specify "should be able to switch languages using strings" do
+    Gibberish.current_language = 'es'
+    Gibberish.current_language.should.equal :es
+  end
+
   specify "should be able to switch to the default language at any time" do
     Gibberish.current_language = :fr
     Gibberish.should.not.be.default_language
