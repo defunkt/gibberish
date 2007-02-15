@@ -49,6 +49,21 @@ context "After loading languages, Gibberish" do
     Gibberish.current_language = nil
     Gibberish.should.be.default_language
   end
+
+  specify "should be able to switch to a certain language for the duration of a block" do
+    Gibberish.should.be.default_language
+
+    string = "Welcome, friend!"
+    string[:welcome_friend].should.equal string
+
+    Gibberish.use_language :es do
+      string[:welcome_friend].should.not.equal string
+    Gibberish.should.not.be.default_language
+    end
+
+    Gibberish.should.be.default_language
+    string[:welcome_friend].should.equal string
+  end
 end
 
 context "When no language is set" do

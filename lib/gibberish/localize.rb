@@ -25,6 +25,13 @@ module Gibberish
       @@current_language = languages[language] ? language : nil
     end
 
+    def use_language(language)
+      start_language = current_language
+      self.current_language = language
+      yield
+      self.current_language = start_language
+    end
+
     def default_language?
       current_language == default_language
     end
