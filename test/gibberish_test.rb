@@ -78,6 +78,16 @@ context "After loading languages, Gibberish" do
     languages.should.include :es
     languages.should.include :fr
   end
+
+  specify "should be able to accept new, unique reserved keys" do
+    key = :something_evil
+    Gibberish.add_reserved_key key
+    Gibberish.reserved_keys.should.include key
+    Gibberish.reserved_keys.size.should.equal 2
+    Gibberish.add_reserved_key key
+    Gibberish.add_reserved_key key
+    Gibberish.reserved_keys.size.should.equal 2
+  end
 end
 
 context "When no language is set" do

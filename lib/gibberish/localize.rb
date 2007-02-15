@@ -6,6 +6,11 @@ module Gibberish
     @@reserved_keys = [ :limit ]
     mattr_reader :reserved_keys
 
+    def add_reserved_key(*key)
+      (@@reserved_keys += key.flatten).uniq!
+    end
+    alias :add_reserved_keys :add_reserved_key
+
     @@languages = {}
     def languages
       @@languages.keys

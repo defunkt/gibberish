@@ -1,6 +1,6 @@
 = Gibberish
 
-Yet another localization library.  Maybe with the most agreeable API.
+Yet another localization library.  Maybe with the most agreeable API?
 
 = Usage
 
@@ -59,16 +59,21 @@ This of course works with your translations:
 
 Neat.  What other methods do we get?
 
-The classic around_filter use case:
+The classic around_filter:
 
   >> Gibberish.default_language?
   => true
   >> Gibberish.use_language(:es) do
+  ?>   puts "English? #{Gibberish.default_language?}"
   ?>   puts "hey"[:hey]
   >> end
+  English? false
   ¡Hey allí!
 
-So, in your ApplicationController (or somewhere):
+For the duration of the block, :es is set as the language of choice.  After the block is run everything
+returns to normal.
+
+Implement it:
 
   class ApplicationController < ActionController::Base
     around_filter :use_language
@@ -99,6 +104,21 @@ modified.  No need to reboot the server.
   => [:es, :fr, :de, :kl]
 
 More as it's needed.
+
+= Warning
+
+By default, Ruby returns nil when a symbol is passed to String's [] method.  Some of Rails, it seems, depends
+on this behavior.  Yes, I am changing !!core Ruby behavior!!  The humanity!
+
+To deal with this assumption, Gibberish has a reserved_keys array.  It, by default, contains :limit (so Rails
+migrations don't explode on you.)  To add to this array, just pass it more keys:
+
+  >> Gibberish.add_reserved_key :another_key
+  => [:limit, :another_key]
+  >> Gibberish.add_reserved_keys :more, :keys
+  => [:limit, :another_key, :more, :keys]
+
+You've been warned.  It really shouldn't affect you, though.
 
 >> Chris Wanstrath
 => chris[at]ozmm[dot]org
