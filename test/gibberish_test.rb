@@ -75,8 +75,7 @@ context "When a non-existent language is set" do
   specify "gibberish strings should return themselves" do
     string = "something gibberishy"
     string[:welcome_friend].should.equal string
-  end
-end
+  end end
 
 context "A gibberish string (in general)" do
   specify "should be a string" do
@@ -99,6 +98,10 @@ context "A gibberish string (in general)" do
     string['ch'].should.equal answer
     string['bc'].should.be.nil
     string[/dog/].should.be.nil
+  end
+
+  specify "should return nil if a reserved key is used" do
+    "string"[:limit].should.be.nil
   end
 end
 

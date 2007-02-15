@@ -9,6 +9,9 @@ module Gibberish
     @@default_language = :en
     mattr_reader :default_language
 
+    @@reserved_keys = [ :limit ]
+    mattr_reader :reserved_keys
+
     @@current_language = nil
 
     def current_language
@@ -28,6 +31,7 @@ module Gibberish
     end
 
     def translate(string, key, *args)
+      return if reserved_keys.include? key
       target = translations[key] || string
       interpolate_string(target.dup, *args.dup)
     end
