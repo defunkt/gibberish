@@ -61,36 +61,25 @@ Neat.  What other methods do we get?
 
 The classic around_filter:
 
-  >> Gibberish.default_language?
-  => true
-  >> Gibberish.use_language(:es) do
-  ?>   puts "English? #{Gibberish.default_language?}"
-  ?>   puts "hey"[:hey]
-  >> end
-  English? false
-  ¡Hey allí!
-
-For the duration of the block, :es is set as the language of choice.  After the block is run everything
-returns to normal.
-
-Implement it:
-
   class ApplicationController < ActionController::Base
-    around_filter :use_language
+    around_filter :set_language
 
   private
-    def use_language
+    def set_language
       Gibberish.use_language(session[:language]) { yield }
     end
   end
 
-Rad.
+For the duration of the block, :es is set as the language of choice.  After the block is run everything
+returns to normal.  Rad.
 
 Finally, some checking methods, if you need them:
 
   >> Gibberish.default_language?
   => true
   >> Gibberish.current_language = :es
+  => :es
+  >> Gibberish.current_language 
   => :es
   >> Gibberish.default_language?
   => false
