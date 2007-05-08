@@ -1,4 +1,5 @@
 begin
+  require 'rubygems'
   require 'test/spec'
 rescue LoadError
   puts "==> The test/spec library (gem) is required to run the Gibberish tests."
@@ -147,6 +148,15 @@ context "A gibberish string (in general)" do
 
   specify "should return nil if a reserved key is used" do
     "string"[:limit].should.be.nil
+  end
+
+  specify "should assume its key is its value" do
+    "just_a_string"[]
+  end
+  
+  specify "should set default key to underscored string" do
+    Gibberish.current_language = :es
+    'welcome friend'[].should == '¡Recepción, amigo!'
   end
 end
 
