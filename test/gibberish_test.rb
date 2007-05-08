@@ -150,10 +150,6 @@ context "A gibberish string (in general)" do
     "string"[:limit].should.be.nil
   end
 
-  specify "should assume its key is its value" do
-    "just_a_string"[]
-  end
-  
   specify "should set default key to underscored string" do
     Gibberish.current_language = :es
     'welcome friend'[].should == '¡Recepción, amigo!'
