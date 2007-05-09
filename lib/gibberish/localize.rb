@@ -59,7 +59,21 @@ module Gibberish
 
   private
     def interpolate_string(string, *args)
-      string.gsub(/\{\w+\}/) { args.shift }
+      if args.last.is_a? Hash
+        interpolate_with_hash(string, args.last)
+      else
+        interpolate_with_strings(string, args)
+      end
+    end
+
+    def interpolate_with_hash(string, hash)
+      hash.inject(string) do |target, (search, replace)|
+        target.sub("{#{search}}", replace)
+      end 
+    end
+
+    def interpolate_with_strings(string, strings)
+      string.gsub(/\{\w+\}/) { strings.shift }
     end
 
     def language_files

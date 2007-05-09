@@ -44,6 +44,11 @@ Notice we don't use hashes (#) like normal Ruby interpolation.  Also, the names 
 in the brackets don't really mean much.  Interpolation is done in order -- the first argument replaces
 the first variable in brackets, the second the second, etc.
 
+Interpolation can also be done via hash:
+
+  >> "{name} is from {place}"[:hey_place, { :place => 'Gotham City', :name => 'Batman' }]
+  => "Batman is from Gotham City"
+
 This of course works with your translations:
 
   $ cat lang/es.yml

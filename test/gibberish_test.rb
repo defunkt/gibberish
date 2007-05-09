@@ -134,6 +134,14 @@ context "A gibberish string (in general)" do
     '{computer} omg?'[:puter, 'mac'].should.equal "mac omg?"
   end
 
+  specify "should interpolate based on key if passed a hash" do
+    'Hi, {user} of {place}'[:hi_there, { :place => 'france', :user => 'chris' }].should.equal "Hi, chris of france"
+
+    bands  = { 'other_bad_band' => 'Deputy', :good_band => 'Word Picture', 'bad_band' => 'Dagger' }
+    answer = 'Well, Dagger sucks and so does Deputy, but Word Picture is pretty rad.'
+    'Well, {bad_band} sucks and so does {other_bad_band}, but {good_band} is pretty rad.'[:snobbish, bands].should.equal answer
+  end
+
   specify "should not affect existing string methods" do
     string = "chris"
     answer = 'ch'
