@@ -22,7 +22,7 @@ module Gibberish
     end
 
     def current_language=(language)
-      load_languages! if defined? RAILS_ENV && RAILS_ENV == 'development'
+      load_languages! if defined?(RAILS_ENV) && RAILS_ENV == 'development'
 
       language = language.to_sym if language.respond_to? :to_sym
       @@current_language = @@languages[language] ? language : nil
