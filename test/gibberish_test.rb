@@ -10,7 +10,7 @@ $:.unshift File.dirname(__FILE__) + '/../lib'
 require 'active_support'
 require 'gibberish'
 
-RAILS_ROOT = '.'
+RAILS_ROOT = File.dirname(__FILE__) + '/..'
 Gibberish.load_languages!
 
 context "After loading languages, Gibberish" do
