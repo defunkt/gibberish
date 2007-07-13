@@ -160,7 +160,7 @@ context "A gibberish string (in general)" do
 
   specify "should set default key to underscored string" do
     Gibberish.current_language = :es
-    'welcome friend'[].should == '¡Recepción, amigo!'
+    'welcome friend'[].should == '¡Bienvenido amigo!'
   end
 end
 
@@ -183,8 +183,8 @@ context "When a non-default language is set" do
   end
 
   specify "a gibberish string should return a translated version of itself if a corresponding key is found" do
-    "Welcome, friend!"[:welcome_friend].should.equal "¡Recepción, amigo!"
+    "Welcome, friend!"[:welcome_friend].should.equal '¡Bienvenido amigo!'
     "I love Rails."[:love_rails].should.equal "Amo los carriles."
-    'Welcome, {user}!'[:welcome_user, 'Marvin'].should.equal "¡Recepción, Marvin!"
+    'Welcome, {user}!'[:welcome_user, 'Marvin'].should.equal '¡Bienvenido Marvin!'
   end
 end
