@@ -7,10 +7,11 @@ rescue LoadError
 end
 
 $:.unshift File.dirname(__FILE__) + '/../lib'
+RAILS_ROOT = File.dirname(__FILE__) + '/..'
+
 require 'active_support'
 require 'gibberish'
 
-RAILS_ROOT = File.dirname(__FILE__) + '/..'
 Gibberish.load_languages!
 
 context "After loading languages, Gibberish" do
@@ -88,6 +89,18 @@ context "After loading languages, Gibberish" do
     Gibberish.add_reserved_key key
     Gibberish.add_reserved_key key
     Gibberish.reserved_keys.size.should.equal 2
+  end
+  
+  specify "should have loaded language files from directories other than the default" do
+    Gibberish.language_paths << File.dirname(__FILE__)
+    Gibberish.load_languages!
+    string = "I don't speak Babble."
+    Gibberish.use_language :es do
+      string[:no_babble].should.equal "No hablo Bable."
+    end
+    Gibberish.use_language :fr do
+      string[:no_babble].should.equal "Je ne parle pas Babble."
+    end
   end
 end
 

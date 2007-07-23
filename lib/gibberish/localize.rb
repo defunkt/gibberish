@@ -52,11 +52,16 @@ module Gibberish
     def load_languages!
       language_files.each do |file| 
         key = File.basename(file, '.*').to_sym
-        @@languages[key] = YAML.load_file(file).symbolize_keys
+        @@languages[key] ||= {}
+        @@languages[key].merge! YAML.load_file(file).symbolize_keys
       end
       languages
     end
 
+    @@language_paths = [RAILS_ROOT]
+    def language_paths
+      @@language_paths ||= []
+    end
   private
     def interpolate_string(string, *args)
       if args.last.is_a? Hash
@@ -75,9 +80,9 @@ module Gibberish
     def interpolate_with_strings(string, strings)
       string.gsub(/\{\w+\}/) { strings.shift }
     end
-
+    
     def language_files
-      Dir[File.join(RAILS_ROOT, 'lang', '*.{yml,yaml}')]
+      @@language_paths.map {|path| Dir[File.join(path, 'lang', '*.{yml,yaml}')]}.flatten
     end
   end
 end
