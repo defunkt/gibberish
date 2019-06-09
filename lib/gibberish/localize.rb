@@ -46,7 +46,7 @@ module Gibberish
     def translate(string, key, *args)
       return if reserved_keys.include? key
       target = translations[key] || string
-      interpolate_string(target.dup, *args.dup)
+      interpolate_string(target.to_s.dup, *args.dup)
     end
 
     def load_languages!
